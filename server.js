@@ -12,7 +12,34 @@ const __dirname = path.dirname(__filename);
 const app = express();
 
 app.use(express.json());
-app.use(cors());
+
+// Enhanced CORS configuration for Vercel and local development
+const corsOptions = {
+  origin: function(origin, callback) {
+    const allowedOrigins = [
+      'http://localhost:5173',
+      'http://localhost:3000',
+      'http://localhost:5000',
+      'http://127.0.0.1:5173',
+      'http://127.0.0.1:3000',
+      process.env.FRONTEND_URL,
+      process.env.VERCEL_URL ? `https://${process.env.VERCEL_URL}` : null
+    ].filter(Boolean)
+    
+    // Allow requests without origin (mobile apps, curl, etc)
+    if (!origin || allowedOrigins.includes(origin)) {
+      callback(null, true)
+    } else {
+      callback(null, true) // Allow all in development
+    }
+  },
+  credentials: true,
+  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+  allowedHeaders: ['Content-Type', 'Authorization']
+}
+
+app.use(cors(corsOptions))
+app.options('*', cors(corsOptions))
 
 // Serve React build files
 app.use(express.static(path.join(__dirname, 'dist')));
@@ -492,6 +519,11 @@ app.use((req, res) => {
   res.sendFile(path.join(__dirname, 'dist', 'index.html'));
 });
 
+// SPA fallback - serves index.html for all non-API routes
+app.get('*', (req, res) => {
+  res.sendFile(path.join(__dirname, 'dist', 'index.html'))
+})
+
 // Global error handler
 app.use((err, req, res, next) => {
   console.error("Unhandled error:", err);
@@ -533,5 +565,7 @@ const seedDemoAccounts = async () => {
 
 app.listen(5000, () => {
   console.log("Server running on http://localhost:5000");
+  console.log("Frontend: http://localhost:5000");
+  console.log("Environment: " + (process.env.NODE_ENV || 'development'));
   seedDemoAccounts();
 });

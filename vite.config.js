@@ -6,48 +6,28 @@ export default defineConfig({
   server: {
     port: 5173,
     proxy: {
-      '/register': {
-        target: 'http://localhost:5000',
-        changeOrigin: true
-      },
-      '/login': {
-        target: 'http://localhost:5000',
-        changeOrigin: true
-      },
-      '/complaint': {
-        target: 'http://localhost:5000',
-        changeOrigin: true
-      },
-      '/complaints': {
-        target: 'http://localhost:5000',
-        changeOrigin: true
-      },
-      '/leave': {
-        target: 'http://localhost:5000',
-        changeOrigin: true
-      },
-      '/leaves': {
-        target: 'http://localhost:5000',
-        changeOrigin: true
-      },
-      '/announcement': {
-        target: 'http://localhost:5000',
-        changeOrigin: true
-      },
-      '/announcements': {
-        target: 'http://localhost:5000',
-        changeOrigin: true
-      },
-      '/stats': {
-        target: 'http://localhost:5000',
-        changeOrigin: true
-      }
+      '/register': 'http://localhost:5000',
+      '/login': 'http://localhost:5000',
+      '/complaint': 'http://localhost:5000',
+      '/complaints': 'http://localhost:5000',
+      '/leave': 'http://localhost:5000',
+      '/leaves': 'http://localhost:5000',
+      '/announcement': 'http://localhost:5000',
+      '/announcements': 'http://localhost:5000',
+      '/stats': 'http://localhost:5000'
     }
   },
   build: {
     outDir: 'dist',
     emptyOutDir: true,
     sourcemap: false,
-    minify: 'terser'
+    minify: 'terser',
+    rollupOptions: {
+      output: {
+        manualChunks: {
+          vendor: ['react', 'react-dom', 'react-router-dom']
+        }
+      }
+    }
   }
 })
