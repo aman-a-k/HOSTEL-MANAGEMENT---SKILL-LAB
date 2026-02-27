@@ -2,24 +2,22 @@
 // Automatically handles different environments: development, production, Vercel, etc.
 
 const getAPIBaseURL = () => {
+  // Check for environment variable from build process
+  const apiUrl = import.meta.env.VITE_API_URL
+  
+  // If environment variable is set and not empty, use it
+  if (apiUrl && apiUrl.trim() !== '') {
+    return apiUrl
+  }
+
   // In development with Vite dev server, use relative URLs (proxied)
   if (typeof window !== 'undefined' && window.location.hostname === 'localhost') {
     // Local development - use relative URLs (Vite will proxy to :5000)
     return ''
   }
 
-  // Check for environment variable from build process
-  if (typeof import.meta !== 'undefined' && import.meta.env.VITE_API_URL) {
-    return import.meta.env.VITE_API_URL
-  }
-
   // In Vercel or production with same domain, use relative URLs
-  if (typeof window !== 'undefined') {
-    // Use the same origin
-    return ''
-  }
-
-  return 'http://localhost:5000'
+  return ''
 }
 
 // Get base URL for API calls
