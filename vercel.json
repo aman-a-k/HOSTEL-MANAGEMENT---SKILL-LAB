@@ -4,12 +4,6 @@
   "installCommand": "npm install",
   "framework": "react",
   "outputDirectory": "dist",
-  "env": {
-    "VITE_API_URL": {
-      "description": "Backend API URL",
-      "example": "https://api.yourdomain.com or https://yourdomain.com/api"
-    }
-  },
   "rewrites": [
     {
       "source": "/(.*)",
