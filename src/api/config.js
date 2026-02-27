@@ -17,7 +17,7 @@ const getAPIBaseURL = () => {
   
   // Hardcoded fallback for debugging (remove this in production)
   if (typeof window !== 'undefined' && window.location.hostname.includes('vercel')) {
-    return 'https://hostel-management-api.onrender.com'
+    return 'https://hostel-management-skill-lab-1.onrender.com'
   }
 
   // In development with Vite dev server, use relative URLs (proxied)
