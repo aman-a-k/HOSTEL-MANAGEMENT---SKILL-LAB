@@ -11,7 +11,6 @@ RUN npm install
 # Copy source
 COPY vite.config.js tailwind.config.js postcss.config.js index.html ./
 COPY src ./src
-COPY public ./public-src
 
 # Build React app
 RUN npm run build
