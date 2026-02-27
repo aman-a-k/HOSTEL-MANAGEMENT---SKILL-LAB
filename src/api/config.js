@@ -1,5 +1,6 @@
 // API Configuration for frontend
 // Automatically handles different environments: development, production, Vercel, etc.
+// Environment variables are loaded at build time
 
 const getAPIBaseURL = () => {
   // Check for environment variable from build process
