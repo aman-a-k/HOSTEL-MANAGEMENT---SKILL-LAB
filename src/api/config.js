@@ -8,7 +8,16 @@ const getAPIBaseURL = () => {
   
   // If environment variable is set and not empty, use it
   if (apiUrl && apiUrl.trim() !== '') {
+    console.log('Using VITE_API_URL:', apiUrl)
     return apiUrl
+  }
+
+  // Debug: Log that env var is missing
+  console.log('VITE_API_URL not set, using fallback')
+  
+  // Hardcoded fallback for debugging (remove this in production)
+  if (typeof window !== 'undefined' && window.location.hostname.includes('vercel')) {
+    return 'https://hostel-management-api.onrender.com'
   }
 
   // In development with Vite dev server, use relative URLs (proxied)
