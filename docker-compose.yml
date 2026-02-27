@@ -1,0 +1,36 @@
+version: "3"
+
+services:
+  backend:
+    build: .
+    container_name: backend
+    expose:
+      - "5000"
+    environment:
+      - MONGO_URL=mongodb://mongo:27017/hostel
+      - JWT_SECRET=hostelops-secure-secret-key-2026
+      - NODE_ENV=production
+    depends_on:
+      - mongo
+    restart: unless-stopped
+
+  mongo:
+    image: mongo
+    container_name: mongo
+    restart: unless-stopped
+    volumes:
+      - mongo-data:/data/db
+
+  nginx:
+    image: nginx:latest
+    container_name: nginx
+    ports:
+      - "80:80"
+    volumes:
+      - ./nginx.conf:/etc/nginx/nginx.conf
+    depends_on:
+      - backend
+    restart: unless-stopped
+
+volumes:
+  mongo-data:
